@@ -78,15 +78,21 @@
 }
 
 \DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
   \printnames{author}%
   \setunit*{\addcolon\space}\newblock
   \printfield{title}%
   \newunit\newblock
   \usebibmacro{journal}%
   \usebibmacro{journal:info}%
+  \usebibmacro{related}%
+  \usebibmacro{finentry}%
 }
 
 \DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
   \printnames{author}%
   \printnames{editor}%
   \setunit*{\addcolon\space}
@@ -97,9 +103,13 @@
     {}
     {\addcomma\addspace\printlist{location}}
   \printfield{year}%
+  \usebibmacro{related}%
+  \usebibmacro{finentry}%
 }
 
 \DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
   \printnames{author}
   \setunit*{\addcolon\space}
   \printfield[article]{title}
@@ -123,7 +133,9 @@
   \iflistundef{location}
     {}
     {\addcomma\addspace\printlist{location}\space}%
-  \printfield{year}
+  \printfield{year}%
+  \usebibmacro{related}%
+  \usebibmacro{finentry}%
 }
 
 \DeclareBibliographyDriver{*}{%
