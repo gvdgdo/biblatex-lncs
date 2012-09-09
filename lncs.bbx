@@ -1,0 +1,133 @@
+\ProvidesFile{lncs.bbx}[2012/09/09 v0.1]
+
+\RequireBibliographyStyle{numeric}
+
+\ExecuteBibliographyOptions{firstinits=true,
+  minbibnames=1,
+  mincrossrefs=99,
+  maxbibnames=999}
+  
+\DeclareFieldFormat{labelnumberwidth}{#1.}
+\defbibenvironment{bibliography}
+  {\list
+     {\printfield[labelnumberwidth]{labelnumber}}
+     {\setlength{\labelwidth}{\labelnumberwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{.5em}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}
+  {\endlist}
+  {\item}
+
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=acronym, fieldtarget=usera]
+    }
+  }
+}
+
+\DeclareFieldFormat{journaltitle}{#1}
+\DeclareFieldFormat[article,inproceedings]{title}{#1}
+\DeclareFieldFormat{booktitle}{#1}
+\DeclareFieldFormat[article]{pages}{#1}
+\DeclareFieldFormat{year}{(#1)}
+\DeclareFieldAlias{acronym}{usera}
+\DeclareFieldAlias{usera}{acronym}
+\DeclareFieldFormat{acronym}{#1}
+
+\renewbibmacro{journal}{%
+  \iffieldundef{shortjournal}
+    {\printfield{journaltitle}}
+    {\printfield[journal]{shortjournal}}%
+}
+
+\newbibmacro{journal:info}{
+  \iffieldundef{volume}
+    {\iffieldundef{year}
+      {\iffieldundef{pubstate}
+        {}
+        {\printfield{pubstate}}}
+      {\printfield{year}}}
+    {\printfield{volume}%
+      \iffieldundef{number}{}{(\printfield{number})}%
+      \iffieldundef{pages}
+        {\addspace\printfield{year}}
+        {\addcomma\addspace\printfield{pages}\addspace\printfield{year}}
+    }
+}
+
+\renewcommand*{\bibinitdelim}{}
+
+\DeclareNameFormat{author}{%
+  \ifblank{#5}{}{#5\space}#1, #4%
+  \ifthenelse{\value{listcount}<\value{liststop}}
+    {\addcomma\space}%
+    {}%
+}
+
+\DeclareNameFormat{editor}{%
+  \ifblank{#5}{}{#5\space}#1, #4%
+  \ifthenelse{\value{listcount}<\value{liststop}}
+    {\addcomma\space}%
+    {\space\ifthenelse{\value{listcount}>1}
+      {(\bibstring{editors})}
+      {(\bibstring{editor})}}%
+}
+
+\DeclareBibliographyDriver{article}{%
+  \printnames{author}%
+  \setunit*{\addcolon\space}\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \usebibmacro{journal}%
+  \usebibmacro{journal:info}%
+}
+
+\DeclareBibliographyDriver{book}{%
+  \printnames{author}%
+  \printnames{editor}%
+  \setunit*{\addcolon\space}
+  \printfield{title}%
+  \newunit
+  \printlist{publisher}%
+  \iflistundef{location}
+    {}
+    {\addcomma\addspace\printlist{location}}
+  \printfield{year}%
+}
+
+\DeclareBibliographyDriver{inproceedings}{%
+  \printnames{author}
+  \setunit*{\addcolon\space}
+  \printfield[article]{title}
+  \newunit\newblock
+  \printtext{In:}
+  \printnames{editor}
+  \iffieldundef{series}
+    {\printfield{booktitle}\addcomma\space}
+    {\iffieldequalstr{series}{LNAI}
+      {\printfield[title]{usera}\addperiod\addspace
+        LNCS\addcomma\addspace 
+        \iffieldundef{volume}
+          {\iffieldundef{number}{}{vol. \printfield{number}\addcomma}}
+          {\printfield{volume}\addcomma}
+        }%
+      {\printfield{usera}}%
+    }%
+  \iffieldundef{pages}{}{\printfield{pages}}
+  \newunit
+  \printlist{publisher}
+  \iflistundef{location}
+    {}
+    {\addcomma\addspace\printlist{location}\space}%
+  \printfield{year}
+}
+
+\DeclareBibliographyDriver{*}{%
+  Titolo: \printfield{title}\\
+  Autore: \printnames{author}\\
+  Prova:  \printfield{acronym}%
+}
