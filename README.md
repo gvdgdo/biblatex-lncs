@@ -5,8 +5,8 @@ BiBLaTeX style for Springer Lecture Notes in Computer Science
 
 # Introduction
 
-The code works with `biblatex 2.2` and it requires `biber` as backend. It
-extend the standard `BiBTeX` model by an `acronym` entry.
+The code works with `biblatex 2.2` and it requires `biber 1.2` as backend. It
+extends the standard `BiBTeX` model by an `acronym` entry.
 
 ## Usage
 
