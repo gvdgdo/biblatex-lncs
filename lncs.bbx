@@ -93,8 +93,9 @@
 \DeclareBibliographyDriver{book}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \printnames{author}%
-  \printnames{editor}%
+  \ifnameundef{author}
+    {\printnames{editor}}
+    {\printnames{author}}%
   \setunit*{\addcolon\space}
   \printfield{title}%
   \newunit
