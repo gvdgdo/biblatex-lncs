@@ -1,0 +1,4 @@
+%\DeclareDatamodelEntrytypes{}
+\DeclareDatamodelFields[type=field, datatype=literal,skipout=false]{acronym}
+\DeclareDatamodelEntryfields{acronym}
+

@@ -21,21 +21,11 @@
   {\endlist}
   {\item}
 
-\DeclareSourcemap{
-  \maps[datatype=bibtex]{
-    \map{
-      \step[fieldsource=acronym, fieldtarget=usera]
-    }
-  }
-}
-
 \DeclareFieldFormat{journaltitle}{#1}
 \DeclareFieldFormat[article,inproceedings]{title}{#1}
 \DeclareFieldFormat{booktitle}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat{year}{(#1)}
-\DeclareFieldAlias{acronym}{usera}
-\DeclareFieldAlias{usera}{acronym}
 \DeclareFieldFormat{acronym}{#1}
 
 \renewbibmacro{journal}{%
@@ -59,6 +49,7 @@
     }
 }
 
+\renewbibmacro{\finentry}{}
 \renewcommand*{\bibinitdelim}{}
 
 \DeclareNameFormat{author}{%
@@ -120,13 +111,13 @@
   \iffieldundef{series}
     {\printfield{booktitle}\addcomma\space}
     {\iffieldequalstr{series}{LNAI}
-      {\printfield[title]{usera}\addperiod\addspace
+      {\printfield{acronym}\addperiod\addspace
         LNCS\addcomma\addspace 
         \iffieldundef{volume}
           {\iffieldundef{number}{}{vol. \printfield{number}\addcomma}}
           {\printfield{volume}\addcomma}
         }%
-      {\printfield{usera}}%
+      {\printfield{acronym}}%
     }%
   \iffieldundef{pages}{}{\printfield{pages}}
   \newunit
@@ -139,8 +130,8 @@
   \usebibmacro{finentry}%
 }
 
-\DeclareBibliographyDriver{*}{%
-  Titolo: \printfield{title}\\
-  Autore: \printnames{author}\\
-  Prova:  \printfield{acronym}%
-}
+% \DeclareBibliographyDriver{*}{%
+%   Titolo: \printfield{title}\\
+%   Autore: \printnames{author}\\
+%   Prova:  \printfield{acronym}%
+% }
