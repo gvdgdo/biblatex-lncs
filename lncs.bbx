@@ -6,6 +6,9 @@
   minbibnames=1,
   mincrossrefs=99,
   maxbibnames=999}
+
+\newtoggle{lncs:abbrev}  
+\DeclareBibliographyOption{acronym}[true]{\toggletrue{lncs:abbrev}}
   
 \DeclareFieldFormat{labelnumberwidth}{#1.}
 \defbibenvironment{bibliography}
@@ -20,6 +23,23 @@
       \renewcommand*{\makelabel}[1]{\hss##1}}
   {\endlist}
   {\item}
+
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=series,
+        match=\regexp{Lecture\s+Notes\s+in\s+Computer\s+Science},
+        replace={LNAI}]
+      \step[fieldsource=series,
+        match=\regexp{Lecture\s+Notes\s+in\s+Artificial\s+Intelligence},
+        replace={LNAI}]
+      \step[fieldsource=series,
+        match=\regexp{Lecture\s+Notes\s+in\s+Business\s+Information\s+Processing},
+        replace={LNBIP}]
+    }
+  }
+}
+
 
 \DeclareFieldFormat{journaltitle}{#1}
 \DeclareFieldFormat[article,inproceedings]{title}{#1}
@@ -49,7 +69,14 @@
     }
 }
 
-\renewbibmacro{\finentry}{}
+\newbibmacro{acronym/booktitle}{%
+  \iffieldundef{acronym}
+    {\printfield{booktitle}}
+    {\printfield{acronym}}%
+    \addcomma\addspace
+}
+
+\renewbibmacro{finentry}{}
 \renewcommand*{\bibinitdelim}{}
 
 \DeclareNameFormat{author}{%
@@ -108,17 +135,29 @@
   \newunit\newblock
   \printtext{In:}
   \printnames{editor}
+  \newunit
   \iffieldundef{series}
-    {\printfield{booktitle}\addcomma\space}
-    {\iffieldequalstr{series}{LNAI}
-      {\printfield{acronym}\addperiod\addspace
-        LNCS\addcomma\addspace 
-        \iffieldundef{volume}
-          {\iffieldundef{number}{}{vol. \printfield{number}\addcomma}}
-          {\printfield{volume}\addcomma}
-        }%
-      {\printfield{acronym}}%
+    {\iftoggle{lncs:abbrev}
+      {\usebibmacro{acronym/booktitle}}
+      {\printfield{booktitle}\addcomma\space}%
     }%
+    {\ifboolexpr{
+        test {\iffieldequalstr{series}{LNAI}}
+        or
+        test {\iffieldequalstr{series}{LNCS}}
+        or
+        test {\iffieldequalstr{series}{LNBIP}}
+      }
+      {\usebibmacro{acronym/booktitle}
+       \printfield{series}\addcomma\addspace
+       \iffieldundef{volume}
+         {\iffieldundef{number}{}{vol.\addspace\printfield{number}\addcomma}}
+         {\printfield{volume}\addcomma}%
+      }%
+      {\usebibmacro{acronym/booktitle}%
+       \printfield{series}\addcomma}%
+    }
+  \newunit
   \iffieldundef{pages}{}{\printfield{pages}}
   \newunit
   \printlist{publisher}
