@@ -7,8 +7,21 @@
   mincrossrefs=99,
   maxbibnames=999}
 
-\newtoggle{lncs:abbrev}  
+\newtoggle{lncs:abbrev}
+\newtoggle{lncs:series}
+\newtoggle{lncs:conference}  
+\newtoggle{lncs:lncs}
 \DeclareBibliographyOption{acronym}[true]{\toggletrue{lncs:abbrev}}
+\DeclareBibliographyOption{series}[no]{
+  \ifstrequal{#1}{short}{}{}
+  \ifstrequal{#1}{full}{}{}
+  \ifstrequal{#1}{no}{}{}
+}
+\DeclareBibliographyOption{conference}[long]{
+  \ifstrequal{#1}{long}{}{}
+  \ifstrequal{#1}{full}{}{}
+  \ifstrequal{#1}{acronym}{}{}
+}
   
 \DeclareFieldFormat{labelnumberwidth}{#1.}
 \defbibenvironment{bibliography}
@@ -76,7 +89,17 @@
     \addcomma\addspace
 }
 
-\renewbibmacro{finentry}{}
+\newbibmacro{publisher+location}{%
+  \iftoggle{lncs:lncs}
+    {\printtext{Springer, Heidelberg}}
+    {\printlist{publisher}%
+      \iflistundef{location}
+        {}
+        {\addcomma\addspace\printlist{location}}%
+    }%
+}
+
+\renewbibmacro{finentry}{\settoggle{lncs:lncs}{false}}
 \renewcommand*{\bibinitdelim}{}
 
 \DeclareNameFormat{author}{%
@@ -148,7 +171,8 @@
         or
         test {\iffieldequalstr{series}{LNBIP}}
       }
-      {\usebibmacro{acronym/booktitle}
+      {\settoggle{lncs:lncs}{true}%
+       \usebibmacro{acronym/booktitle}%
        \printfield{series}\addcomma\addspace
        \iffieldundef{volume}
          {\iffieldundef{number}{}{vol.\addspace\printfield{number}\addcomma}}
@@ -160,14 +184,19 @@
   \newunit
   \iffieldundef{pages}{}{\printfield{pages}}
   \newunit
-  \printlist{publisher}
-  \iflistundef{location}
-    {}
-    {\addcomma\addspace\printlist{location}\space}%
+  \usebibmacro{publisher+location}%
+  \setunit{\space}%
   \printfield{year}%
   \usebibmacro{related}%
   \usebibmacro{finentry}%
 }
+
+\DeclareBibliographyDriver{proceedings}{PROCEEDINGS}
+\DeclareBibliographyDriver{incollection}{INCOLLECTION}
+\DeclareBibliographyDriver{online}{ONLINE}
+\DeclareBibliographyDriver{misc}{MISC}
+\DeclareBibliographyDriver{thesis}{THESIS}
+\DeclareBibliographyDriver{techreport}{TECHREPORT}
 
 % \DeclareBibliographyDriver{*}{%
 %   Titolo: \printfield{title}\\
