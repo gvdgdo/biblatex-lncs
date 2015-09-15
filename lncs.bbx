@@ -191,6 +191,17 @@
   \usebibmacro{finentry}%
 }
 
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit*{\addcolon\space}\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \printfield{note}%
+  \usebibmacro{finentry}%
+}
+
 \DeclareBibliographyDriver{proceedings}{PROCEEDINGS}
 \DeclareBibliographyDriver{incollection}{INCOLLECTION}
 \DeclareBibliographyDriver{online}{ONLINE}
