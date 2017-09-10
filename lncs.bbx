@@ -2,7 +2,7 @@
 
 \RequireBibliographyStyle{numeric}
 
-\ExecuteBibliographyOptions{firstinits=true,
+\ExecuteBibliographyOptions{giveninits=true,
   minbibnames=1,
   mincrossrefs=99,
   maxbibnames=999}
@@ -103,14 +103,14 @@
 \renewcommand*{\bibinitdelim}{}
 
 \DeclareNameFormat{author}{%
-  \ifblank{#5}{}{#5\space}#1, #4%
+  \ifblank{\namepartprefix}{}{\namepartprefix\space}\namepartfamily, \namepartgiveni%
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {}%
 }
 
 \DeclareNameFormat{editor}{%
-  \ifblank{#5}{}{#5\space}#1, #4%
+  \ifblank{\namepartprefix}{}{\namepartprefix\space}\namepartfamily, \namepartgiveni%
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {\space\ifthenelse{\value{listcount}>1}
