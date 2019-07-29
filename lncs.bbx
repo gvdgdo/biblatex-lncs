@@ -103,14 +103,14 @@
 \renewcommand*{\bibinitdelim}{}
 
 \DeclareNameFormat{author}{%
-  \ifblank{\namepartprefix}{}{\namepartprefix\space}\namepartfamily, \namepartgiveni%
+  \ifdefvoid{\namepartprefix}{}{\namepartprefix\space}\namepartfamily, \namepartgiveni%
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {}%
 }
 
 \DeclareNameFormat{editor}{%
-  \ifblank{\namepartprefix}{}{\namepartprefix\space}\namepartfamily, \namepartgiveni%
+  \ifdefvoid{\namepartprefix}{}{\namepartprefix\space}\namepartfamily, \namepartgiveni%
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {\space\ifthenelse{\value{listcount}>1}
